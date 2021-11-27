@@ -4,7 +4,6 @@ Defines the unit tests for the :mod:`colour.continuous.multi_signals` module.
 """
 
 import numpy as np
-import operator
 import unittest
 import re
 import textwrap
@@ -290,7 +289,7 @@ extrapolator_kwargs` property.
         property.
         """
 
-        self.assertListEqual(self._multi_signals.labels, [0, 1, 2])
+        self.assertListEqual(self._multi_signals.labels, ['0', '1', '2'])
 
         multi_signals = self._multi_signals.copy()
 
@@ -344,7 +343,7 @@ extrapolator_kwargs` property.
             pass
 
         multi_signals = MultiSignals(self._range_1, signal_type=NotSignal)
-        self.assertIsInstance(multi_signals.signals[0], NotSignal)
+        self.assertIsInstance(multi_signals.signals['0'], NotSignal)
         np.testing.assert_array_equal(multi_signals.domain, self._domain_1)
         np.testing.assert_array_equal(multi_signals.range,
                                       self._range_1[:, np.newaxis])
@@ -413,7 +412,7 @@ extrapolator_kwargs` property.
                               [   7.,   80.,   90.,  100.],
                               [   8.,   90.,  100.,  110.],
                               [   9.,  100.,  110.,  120.]],
-                             labels=[0, 1, 2],
+                             labels=['0', '1', '2'],
                              interpolator=KernelInterpolator,
                              interpolator_kwargs={},
                              extrapolator=Extrapolator,
@@ -502,14 +501,6 @@ extrapolator_kwargs` property.
         np.testing.assert_array_equal(
             multi_signals[np.array([-1000, 1000])],
             np.array([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]))
-
-    def test_raise_exception__getitem__(self):
-        """
-        Tests :func:`colour.continuous.multi_signals.MultiSignals.__getitem__`
-        method raised exception.
-        """
-
-        self.assertRaises(RuntimeError, operator.getitem, MultiSignals(), 0)
 
     def test__setitem__(self):
         """
@@ -643,14 +634,6 @@ extrapolator_kwargs` property.
         self.assertIn(0, self._multi_signals)
         self.assertIn(0.5, self._multi_signals)
         self.assertNotIn(1000, self._multi_signals)
-
-    def test_raise_exception__contains__(self):
-        """
-        Tests :func:`colour.continuous.multi_signals.MultiSignals.__contains__`
-        method raised exception.
-        """
-
-        self.assertRaises(RuntimeError, operator.contains, MultiSignals(), 0)
 
     def test__len__(self):
         """
@@ -834,27 +817,33 @@ multi_signals_unpack_data` method.
         """
 
         signals = MultiSignals.multi_signals_unpack_data(self._range_1)
-        self.assertListEqual(list(signals.keys()), [0])
-        np.testing.assert_array_equal(signals[0].domain, self._domain_1)
-        np.testing.assert_array_equal(signals[0].range, self._range_1)
+        self.assertListEqual(list(signals.keys()), ['0'])
+        np.testing.assert_array_equal(signals['0'].domain, self._domain_1)
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
 
         signals = MultiSignals.multi_signals_unpack_data(
             self._range_1, self._domain_2)
-        self.assertListEqual(list(signals.keys()), [0])
-        np.testing.assert_array_equal(signals[0].domain, self._domain_2)
-        np.testing.assert_array_equal(signals[0].range, self._range_1)
+        self.assertListEqual(list(signals.keys()), ['0'])
+        np.testing.assert_array_equal(signals['0'].domain, self._domain_2)
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
 
         signals = MultiSignals.multi_signals_unpack_data(
             self._range_1,
             dict(zip(self._domain_2, self._range_1)).keys())
-        np.testing.assert_array_equal(signals[0].domain, self._domain_2)
+        np.testing.assert_array_equal(signals['0'].domain, self._domain_2)
 
         signals = MultiSignals.multi_signals_unpack_data(
             self._range_2, self._domain_2)
-        self.assertListEqual(list(signals.keys()), [0, 1, 2])
-        np.testing.assert_array_equal(signals[0].range, self._range_1)
-        np.testing.assert_array_equal(signals[1].range, self._range_1 + 10)
-        np.testing.assert_array_equal(signals[2].range, self._range_1 + 20)
+        self.assertListEqual(list(signals.keys()), ['0', '1', '2'])
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
+        np.testing.assert_array_equal(signals['1'].range, self._range_1 + 10)
+        np.testing.assert_array_equal(signals['2'].range, self._range_1 + 20)
+
+        signals = MultiSignals.multi_signals_unpack_data(
+            list(
+                MultiSignals.multi_signals_unpack_data(
+                    dict(zip(self._domain_2, self._range_2))).values())[0])
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
 
         signals = MultiSignals.multi_signals_unpack_data(
             MultiSignals.multi_signals_unpack_data(
@@ -865,27 +854,27 @@ multi_signals_unpack_data` method.
 
         signals = MultiSignals.multi_signals_unpack_data(
             dict(zip(self._domain_2, self._range_2)))
-        self.assertListEqual(list(signals.keys()), [0, 1, 2])
-        np.testing.assert_array_equal(signals[0].range, self._range_1)
-        np.testing.assert_array_equal(signals[1].range, self._range_1 + 10)
-        np.testing.assert_array_equal(signals[2].range, self._range_1 + 20)
+        self.assertListEqual(list(signals.keys()), ['0', '1', '2'])
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
+        np.testing.assert_array_equal(signals['1'].range, self._range_1 + 10)
+        np.testing.assert_array_equal(signals['2'].range, self._range_1 + 20)
 
         signals = MultiSignals.multi_signals_unpack_data(
             MultiSignals.multi_signals_unpack_data(
                 dict(zip(self._domain_2, self._range_2))))
-        self.assertListEqual(list(signals.keys()), [0, 1, 2])
-        np.testing.assert_array_equal(signals[0].range, self._range_1)
-        np.testing.assert_array_equal(signals[1].range, self._range_1 + 10)
-        np.testing.assert_array_equal(signals[2].range, self._range_1 + 20)
+        self.assertListEqual(list(signals.keys()), ['0', '1', '2'])
+        np.testing.assert_array_equal(signals['0'].range, self._range_1)
+        np.testing.assert_array_equal(signals['1'].range, self._range_1 + 10)
+        np.testing.assert_array_equal(signals['2'].range, self._range_1 + 20)
 
         if is_pandas_installed():
             from pandas import DataFrame, Series
 
             signals = MultiSignals.multi_signals_unpack_data(
                 Series(dict(zip(self._domain_1, self._range_1))))
-            self.assertListEqual(list(signals.keys()), [0])
-            np.testing.assert_array_equal(signals[0].domain, self._domain_1)
-            np.testing.assert_array_equal(signals[0].range, self._range_1)
+            self.assertListEqual(list(signals.keys()), ['0'])
+            np.testing.assert_array_equal(signals['0'].domain, self._domain_1)
+            np.testing.assert_array_equal(signals['0'].range, self._range_1)
 
             data = dict(zip(['a', 'b', 'c'], tsplit(self._range_2)))
             signals = MultiSignals.multi_signals_unpack_data(
