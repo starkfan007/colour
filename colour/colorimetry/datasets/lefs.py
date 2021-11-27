@@ -42,6 +42,8 @@ References
     http://en.wikipedia.org/wiki/Mesopic_vision#Mesopic_weighting_function
 """
 
+from __future__ import annotations
+
 from functools import partial
 
 from colour.colorimetry import SpectralDistribution
@@ -63,7 +65,7 @@ __all__ = [
     'DATA_MESOPIC_X',
 ]
 
-DATA_LEFS_PHOTOPIC = {
+DATA_LEFS_PHOTOPIC: dict = {
     'CIE 1924 Photopic Standard Observer': {
         360: 0.0000039170000,
         361: 0.0000043935810,
@@ -2344,7 +2346,7 @@ DATA_LEFS_PHOTOPIC = {
     }
 }
 
-SDS_LEFS_PHOTOPIC = LazyCaseInsensitiveMapping({
+SDS_LEFS_PHOTOPIC: LazyCaseInsensitiveMapping = LazyCaseInsensitiveMapping({
     'CIE 1924 Photopic Standard Observer':
         partial(
             SpectralDistribution,
@@ -2391,14 +2393,6 @@ References
 ----------
 :cite:`CVRLq`, :cite:`CVRLs`
 
-SDS_LEFS_PHOTOPIC : LazyCaseInsensitiveMapping
-    **{'CIE 1924 Photopic Standard Observer',
-    'Judd Modified CIE 1951 Photopic Standard Observer',
-    'Judd-Vos Modified CIE 1978 Photopic Standard Observer',
-    'CIE 1964 Photopic 10 Degree Standard Observer',
-    'CIE 2008 2 Degree Physiologically Relevant LEF',
-    'CIE 2008 10 Degree Physiologically Relevant LEF'}**
-
 Aliases:
 
 -   'cie_2_1924': 'CIE 1931 2 Degree Standard Observer'
@@ -2409,7 +2403,7 @@ SDS_LEFS_PHOTOPIC['cie_2_1924'] = (
 SDS_LEFS_PHOTOPIC['cie_10_1964'] = (
     SDS_LEFS_PHOTOPIC['CIE 1964 Photopic 10 Degree Standard Observer'])
 
-DATA_LEFS_SCOTOPIC = {
+DATA_LEFS_SCOTOPIC: dict = {
     'CIE 1951 Scotopic Standard Observer': {
         380: 0.0005890000,
         381: 0.0006650000,
@@ -2815,7 +2809,7 @@ DATA_LEFS_SCOTOPIC = {
     }
 }
 
-SDS_LEFS_SCOTOPIC = LazyCaseInsensitiveMapping({
+SDS_LEFS_SCOTOPIC: LazyCaseInsensitiveMapping = LazyCaseInsensitiveMapping({
     'CIE 1951 Scotopic Standard Observer':
         partial(
             SpectralDistribution,
@@ -2829,9 +2823,6 @@ References
 ----------
 :cite:`CVRLs`
 
-SDS_LEFS_SCOTOPIC : LazyCaseInsensitiveMapping
-    **{'CIE 1951 Scotopic Standard Observer', }**
-
 Aliases:
 
 -   'cie_1951': 'CIE 1951 Scotopic Standard Observer'
@@ -2839,26 +2830,18 @@ Aliases:
 SDS_LEFS_SCOTOPIC['cie_1951'] = (
     SDS_LEFS_SCOTOPIC['CIE 1951 Scotopic Standard Observer'])
 
-SDS_LEFS = LazyCaseInsensitiveMapping(SDS_LEFS_PHOTOPIC)
+SDS_LEFS: LazyCaseInsensitiveMapping = LazyCaseInsensitiveMapping(
+    SDS_LEFS_PHOTOPIC)
 SDS_LEFS.__doc__ = """
 Spectral distributions of the luminous efficiency functions.
 
 References
 ----------
 :cite:`CVRLq`, :cite:`CVRLs`, :cite:`Wikipedia2005d`
-
-SDS_LEFS : LazyCaseInsensitiveMapping
-    **{'CIE 1924 Photopic Standard Observer',
-    'Judd Modified CIE 1951 Photopic Standard Observer',
-    'Judd-Vos Modified CIE 1978 Photopic Standard Observer',
-    'CIE 1964 Photopic 10 Degree Standard Observer',
-    'CIE 2008 2 Degree Physiologically Relevant LEF',
-    'CIE 2008 10 Degree Physiologically Relevant LEF',
-    'CIE 1951 Scotopic Standard Observer'}**
 """
 SDS_LEFS.update(SDS_LEFS_SCOTOPIC)
 
-DATA_MESOPIC_X = {
+DATA_MESOPIC_X: dict = {
     0.01:
         CaseInsensitiveMapping({
             'Blue Heavy': CaseInsensitiveMapping({

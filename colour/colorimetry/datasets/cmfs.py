@@ -62,6 +62,8 @@ References
     http://www.lume.ufrgs.br/handle/10183/26950
 """
 
+from __future__ import annotations
+
 from functools import partial
 
 from colour.colorimetry import (
@@ -90,7 +92,7 @@ __all__ = [
 
 # *S-cone* spectral sensitivity data wasn't measurable after 615 nm and has
 # been set to zero.
-DATA_CMFS_LMS = {
+DATA_CMFS_LMS: dict = {
     'Stockman & Sharpe 2 Degree Cone Fundamentals': {
         390: (4.15003e-04, 3.68349e-04, 9.54729e-03),
         391: (5.02650e-04, 4.48015e-04, 1.14794e-02),
@@ -1062,7 +1064,7 @@ DATA_CMFS_LMS = {
     }
 }
 
-MSDS_CMFS_LMS = LazyCaseInsensitiveMapping({
+MSDS_CMFS_LMS: LazyCaseInsensitiveMapping = LazyCaseInsensitiveMapping({
     'Stockman & Sharpe 2 Degree Cone Fundamentals':
         partial(
             LMS_ConeFundamentals,
@@ -1088,14 +1090,9 @@ Multi-spectral distributions of the *LMS* colour matching functions.
 References
 ----------
 :cite:`CVRLu`, :cite:`Machado2010a`
-
-MSDS_CMFS_LMS : LazyCaseInsensitiveMapping
-    {'Stockman & Sharpe 2 Degree Cone Fundamentals',
-    'Stockman & Sharpe 10 Degree Cone Fundamentals',
-    'Smith & Pokorny 1975 Normal Trichromats'}
 """
 
-DATA_CMFS_RGB = {
+DATA_CMFS_RGB: dict = {
     'Wright & Guild 1931 2 Degree RGB CMFs': {
         380: (0.00003, -0.00001, 0.00117),
         385: (0.00005, -0.00002, 0.00189),
@@ -1343,7 +1340,7 @@ DATA_CMFS_RGB = {
     }
 }
 
-MSDS_CMFS_RGB = LazyCaseInsensitiveMapping({
+MSDS_CMFS_RGB: LazyCaseInsensitiveMapping = LazyCaseInsensitiveMapping({
     'Wright & Guild 1931 2 Degree RGB CMFs':
         partial(
             RGB_ColourMatchingFunctions,
@@ -1370,14 +1367,9 @@ Multi-spectral distributions of the *RGB* colour matching functions.
 References
 ----------
 :cite:`Broadbent2009a`, :cite:`CVRLt`, :cite:`CVRLw`
-
-MSDS_CMFS_RGB : LazyCaseInsensitiveMapping
-    **{'Wright & Guild 1931 2 Degree RGB CMFs',
-    'Stiles & Burch 1955 2 Degree RGB CMFs',
-    'Stiles & Burch 1959 10 Degree RGB CMFs'}**
 """
 
-DATA_CMFS_STANDARD_OBSERVER = {
+DATA_CMFS_STANDARD_OBSERVER: dict = {
     'CIE 1931 2 Degree Standard Observer': {
         360: (0.000129900000, 0.000003917000, 0.000606100000),
         361: (0.000145847000, 0.000004393581, 0.000680879200),
@@ -3212,7 +3204,9 @@ DATA_CMFS_STANDARD_OBSERVER = {
     }
 }
 
-MSDS_CMFS_STANDARD_OBSERVER = LazyCaseInsensitiveMapping({
+MSDS_CMFS_STANDARD_OBSERVER: (
+    LazyCaseInsensitiveMapping
+) = LazyCaseInsensitiveMapping({
     'CIE 1931 2 Degree Standard Observer':
         partial(
             XYZ_ColourMatchingFunctions,
@@ -3247,12 +3241,6 @@ functions.
 References
 ----------
 :cite:`CVRLr`, :cite:`CVRLs`
-
-MSDS_CMFS_STANDARD_OBSERVER : LazyCaseInsensitiveMapping
-    **{'CIE 1931 2 Degree Standard Observer',
-    'CIE 1964 10 Degree Standard Observer',
-    'CIE 2012 2 Degree Standard Observer',
-    'CIE 2012 10 Degree Standard Observer'}**
 
 Aliases:
 
